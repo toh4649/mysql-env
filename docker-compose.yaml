@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  mysql:
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+    image: mysql:8.0
+    volumes:
+      - ./volumes/mysql_data:/var/lib/mysql
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=pass
+    ports:
+      - "8888:80"
